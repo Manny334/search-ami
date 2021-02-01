@@ -1,0 +1,72 @@
+{
+    "description": "fw-search-image",
+    "builders": [
+        {
+            "profile": "{{user `aws_profile`}}",
+            "iam_instance_profile": "{{user `inst_profile`}}",
+            "region": "{{user `region`}}",
+            "ami_name" : "fw-search-{{timestamp}}",
+            "source_ami_filter": {
+                "filters": {
+                    "virtualization-type": "hvm",
+                    "name": "ubuntu/images/*ubuntu-focal-20.04-amd64-server-*",
+                    "root-device-type": "ebs",
+                    "block-device-mapping.volume-type": "gp2"
+                },
+                "most_recent": true,
+                "owners": [
+                    "099720109477"
+                ]
+            },
+            "ssh_timeout": "10m",
+            "ssh_username": "{{user `ssh_username`}}",
+            "vpc_id": "{{user `vpc_id`}}",
+            "subnet_id": "{{user `subnet_id`}}",
+            "instance_type": "{{user `instance_type`}}",
+            "type": "amazon-ebs",
+            "tags": {
+                "ENV":"packer"
+            }
+        }
+    ],
+    "provisioners":[
+        {
+            "inline": [
+                "sleep 30",
+                "sudo apt-get update -y",
+                "sudo apt-get upgrade -y",
+                "sudo apt-get install openjdk-14-jdk apt-transport-https -y",
+                "java -version"
+            ],
+            "type": "shell"
+        },
+        {
+            "type": "shell",
+            "execute_command": "sudo env {{ .Vars }} {{ .Path }}",
+            "script": "scripts/elasticsearch.sh"
+        },
+        {
+            "type": "shell",
+            "execute_command": "sudo env {{ .Vars }} {{ .Path }}",
+            "script": "scripts/kibana.sh"
+        },
+        {
+            "type": "file",
+            "source": "scripts/elasticsearch.yml",
+            "destination": "/tmp/elasticsearch.yml"
+        },
+        {
+            "type": "shell",
+            "inline": ["sudo mv /tmp/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml"]
+        },
+        {
+            "type": "file",
+            "source": "scripts/kibana.yml",
+            "destination": "/tmp/kibana.yml"
+        },
+        {
+            "type": "shell",
+            "inline": ["sudo mv /tmp/kibana.yml /etc/kibana/kibana.yml"]
+        }
+    ]
+}
