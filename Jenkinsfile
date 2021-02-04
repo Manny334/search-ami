@@ -1,23 +1,38 @@
-pipeline{
-    agent any{
-        environment{
-            REGION='us-east-1'
-            ENVIRONMENT = 'dev'
+#!groovy
+node {
+    def err = null
+    def environment = "Dev"
+    currentBuild.result = "SUCCESS"
+
+    try {
+        stage('Checkout'){
+            checkout scm
         }
-    }
-    stages {
-        stage ('checkout'){
-            steps {
-                checkout scm
+
+        stage('Validate'){
+            sh """
+            set +x
+            packer validate fw-search-ami.json
+            """
+        }
+
+        stage('Build'){
+            withCredentials([string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
+            string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')]){
+                sh """
+                set +x
+                packer build -var fw-search-variables.json fw-search-ami.json
+                """
             }
         }
-        stage ('validate'){
-            sh 'packer validate fw-search-ami.json'
-        }
-        stage('Build'){
-            withCredentials([usernamePassword(credentialsId: 'AWS_CREDENTIALS', accessKeyVariable: 'AWS_ACCESS_KEY',passwordKeyVaraible: 'AWS_SECRET_KEY')])
-            //Run the packer build
-            sh "packer build fw-search-ami.json"
+    }
+    catch(caughtError){
+        err = caughtError
+        currentBuild.result = "FAILURE"
+    }
+    finally{
+        if (err) {
+            throw err
         }
     }
 }
