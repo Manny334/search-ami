@@ -6,16 +6,15 @@ node {
 
     try {
         stage('Checkout'){
-<<<<<<< HEAD
-		        checkout scm
-=======
-		checkout scm
->>>>>>> 358655ed9643bc75d359d871f89e033e8eec6736
+
+            checkout scm
+
         }
+
 
         stage('Validate'){
 
-            packer validate fw-search-ami.json
+            sh """packer validate fw-search-ami.json"""
 
         }
 
@@ -23,7 +22,6 @@ node {
             withCredentials([string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
             string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')]){
                 sh """
-                set +x
                 packer build -var fw-search-variables.json fw-search-ami.json
                 """
             }
