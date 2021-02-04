@@ -10,10 +10,9 @@ node {
         }
 
         stage('Validate'){
-            sh """
-            set +x
+
             packer validate fw-search-ami.json
-            """
+
         }
 
         stage('Build'){
