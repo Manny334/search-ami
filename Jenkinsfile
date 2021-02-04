@@ -6,7 +6,11 @@ node {
 
     try {
         stage('Checkout'){
+<<<<<<< HEAD
 		        checkout scm
+=======
+		checkout scm
+>>>>>>> 358655ed9643bc75d359d871f89e033e8eec6736
         }
 
         stage('Validate'){
