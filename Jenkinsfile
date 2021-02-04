@@ -6,7 +6,10 @@ node {
 
     try {
         stage('Checkout'){
-            checkout scm
+            sh """
+		set +x
+		checkout scm
+	       """
         }
 
         stage('Validate'){
