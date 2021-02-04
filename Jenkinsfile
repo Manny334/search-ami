@@ -14,7 +14,7 @@ node {
 
         stage('Validate'){
 
-            sh """packer validate -var 'fw-search-variables.json' fw-search-ami.json"""
+            sh """packer validate -var-file fw-search-variables.json fw-search-ami.json"""
 
         }
 
@@ -22,7 +22,7 @@ node {
             withCredentials([string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
             string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')]){
                 sh """
-                packer build -var 'fw-search-variables.json' fw-search-ami.json
+                packer build -var-file fw-search-variables.json fw-search-ami.json
                 """
             }
         }
