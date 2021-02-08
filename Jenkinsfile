@@ -32,7 +32,7 @@ node {
             def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [[$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm']])
         }
         stage('Terraform apply'){
-                sh """terraform apply"""
+                sh """terraform apply -auto-approve"""
         }
     }
     catch(caughtError){
