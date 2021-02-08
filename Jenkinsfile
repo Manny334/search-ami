@@ -6,16 +6,12 @@ node {
 
     try {
         stage('Checkout'){
-
             checkout scm
-
         }
 
 
         stage('Validate'){
-
             sh """packer validate -var-file fw-search-variables.json fw-search-ami.json"""
-
         }
 
         stage('Build'){

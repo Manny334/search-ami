@@ -5,7 +5,6 @@
     "subnet_id": "subnet-0778a0484c07fe68f",
     "region": "us-east-1",
     "instance_type": "t3.medium",
-    "aws_profile": "{{env `AWS_PROFILE`}}",
-    "inst_profile": "DevopsSandbox-test"
+    "inst_profile": "JenkinsRole"
 
 }
