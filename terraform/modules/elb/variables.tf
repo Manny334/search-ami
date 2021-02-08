@@ -9,6 +9,7 @@ variable "vpc_id" {
 
 variable "vpc_subnets" {
   type = list(string)
+  default = ["us-east-1a", "us-east-1c"]
 }
 variable "env" {
   default = "dev"

@@ -4,7 +4,7 @@ terraform {
 data "aws_ami" "fw_search_ami"{
     most_recent = true
 
-    owners = ["099720109477"]
+    owners = ["558814676609"]
 
     filter {
         name = "name"
