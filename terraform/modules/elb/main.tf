@@ -1,7 +1,21 @@
 terraform {
   required_version = ">=0.12"
 }
+data "aws_ami" "fw_search_ami"{
+    most_recent = true
 
+    owners = ["099720109477"]
+
+    filter {
+        name = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-20.04-amd64-server-*"]
+    }
+    filter {
+        name = "virtualization-type"
+        values = ["hvm"]
+    }
+
+}
 # Creating a AWS Load balancer
 resource "aws_lb" "fw-lb-internal" {
   name               = "fw-lb-internal"
@@ -104,7 +118,7 @@ resource "aws_lb_target_group" "fw-lb-internal-tg-search-elasticsearch" {
 # Creating launch configuration
 resource "aws_launch_configuration" "fw-internal-instances-launch-configuration" {
   name                        = "fw-internal-instances-launch-configuration"
-  image_id                    = var.es_ami_id
+  image_id                    = data.aws_ami.fw_search_ami.id
   instance_type               = var.es_instance_type
   security_groups             = [aws_security_group.fw-lb-internal-instances-sg.id]
   key_name                    = "testelasticsearch"
