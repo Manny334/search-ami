@@ -22,7 +22,25 @@ node {
                 """
             }
         }
-    }
+        stage('Terraform init'){
+            sh """terraform init"""
+        }
+        stage('Terraform plan'){
+            sh """terraform plan"""
+        }
+        stage('Terraform approval'){
+            steps{
+                script{
+                    def userInput = input(id: 'confirm', message" 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
+                }
+            }
+        }
+        stage('Terraform apply'){
+            steps{
+                sh """terraform apply"""
+            }
+        }
+
     catch(caughtError){
         err = caughtError
         currentBuild.result = "FAILURE"
