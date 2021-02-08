@@ -22,7 +22,7 @@ data "aws_ami" "fw_search_ami"{
 }
 # Creating a AWS Load balancer
 resource "aws_lb" "fw-lb-internal" {
-  name               = "fw-lb-internal"
+  name               = "fw-lb-internal-test"
   load_balancer_type = "application"
   security_groups    = [aws_security_group.fw-lb-internal-sg.id]
   subnets            = [var.vpc_subnets[0], var.vpc_subnets[1]]
