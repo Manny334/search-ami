@@ -8,7 +8,11 @@ data "aws_ami" "fw_search_ami"{
 
     filter {
         name = "name"
-        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-20.04-amd64-server-*"]
+        values = ["fw-search-*"]
+    }
+    filter {
+        name = "root-device-type"
+        values = ["ebs"]
     }
     filter {
         name = "virtualization-type"
