@@ -40,7 +40,7 @@ node {
                 sh """terraform apply"""
             }
         }
-
+    }
     catch(caughtError){
         err = caughtError
         currentBuild.result = "FAILURE"
