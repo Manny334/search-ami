@@ -3,7 +3,9 @@ pipeline {
     stages{
         stage('Checkout') {
             steps {
-                git checkout scm
+                script {
+                    sh "git checkout scm"
+                }
             }
         }
         stage('Validate') {
