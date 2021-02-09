@@ -1,4 +1,4 @@
-resource "aws_security_group" "fw-lb-internal-instances-sg" {
+resource "aws_security_group" "fw-lb-internal-instances-sg-test" {
   name        = "fw-lb-internal-instances-sg"
   description = "Contains the security group for the instances "
   vpc_id      = var.vpc_id
@@ -16,25 +16,25 @@ resource "aws_security_group" "fw-lb-internal-instances-sg" {
   }
 
   tags = {
-    "Name" = "fw-lb-internal-instances-sg",
+    "Name" = "fw-lb-internal-instances-sg-test",
     "ENV"  = var.env
   }
   lifecycle {
     create_before_destroy = true
   }
 }
-resource "aws_security_group_rule" "fw-lb-internal-instances-rule" {
+resource "aws_security_group_rule" "fw-lb-internal-instances-rule-test" {
   type                     = "ingress"
   from_port                = 0
   to_port                  = 0
   protocol                 = "-1"
-  security_group_id        = aws_security_group.fw-lb-internal-instances-sg.id
-  source_security_group_id = aws_security_group.fw-lb-internal-sg.id
+  security_group_id        = aws_security_group.fw-lb-internal-instances-sg-test.id
+  source_security_group_id = aws_security_group.fw-lb-internal-sg-test.id
 }
 
 
 
-resource "aws_security_group" "fw-lb-internal-sg" {
+resource "aws_security_group" "fw-lb-internal-sg-test" {
   name        = "fw-lb-internal-sg"
   description = "Private Load Balancer Security Group"
   vpc_id      = var.vpc_id
@@ -53,7 +53,7 @@ resource "aws_security_group" "fw-lb-internal-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    "Name" = "fw-lb-internal-sg",
+    "Name" = "fw-lb-internal-sg-test",
     "ENV"  = var.env
   }
 }
@@ -63,6 +63,6 @@ resource "aws_security_group_rule" "fw-lb-internal-rule" {
   from_port                = 0
   to_port                  = 0
   protocol                 = "-1"
-  security_group_id        = aws_security_group.fw-lb-internal-sg.id
-  source_security_group_id = aws_security_group.fw-lb-internal-instances-sg.id
+  security_group_id        = aws_security_group.fw-lb-internal-sg-test.id
+  source_security_group_id = aws_security_group.fw-lb-internal-instances-sg-test.id
 }
