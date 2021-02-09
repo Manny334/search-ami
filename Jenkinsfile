@@ -30,9 +30,9 @@ pipeline {
         }
         stage('Terraform plan') {
             steps {
-                script [
+                script {
                     sh "terraform plan"
-                ]
+                }
             }
         }
         stage('Terraform Approval') {
