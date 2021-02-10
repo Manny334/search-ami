@@ -16,11 +16,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-
-                       sh "packer build -var-file fw-search-variables.json fw-search-ami.json"
-
-                   }
-               }
+                    sh "packer build -var-file fw-search-variables.json fw-search-ami.json"
+                }
             }
         }
         stage('Terraform Init') {
